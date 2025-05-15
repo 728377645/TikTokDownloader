@@ -424,3 +424,30 @@ A: 由于权限限制，您无法直接触发主仓库的 Actions。请通过 Fo
 * https://ffmpeg.org/ffmpeg-all.html
 * https://html5up.net/hyperspace
 * https://www.tikwm.com/
+* ## 图形用户界面 (GUI) - 实验性
+
+本项目现在包含一个使用 Streamlit 构建的实验性网页 GUI。
+
+**请注意：** 根据原作者的声明，`TikTokDownloader.py` 的核心下载功能目前**无法工作**。此 GUI 作为演示或未来在核心脚本修复后的开发用途提供。
+
+### GUI 运行前提
+
+确保你已安装 Python 3。
+
+### GUI 安装与运行
+
+1.  克隆仓库:
+    ```bash
+    git clone https://github.com/JoeanAmier/TikTokDownloader.git
+    cd TikTokDownloader
+    ```
+2.  安装依赖 (现在会包含 Streamlit):
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  运行 Streamlit 应用:
+    ```bash
+    streamlit run app.py
+    ```
+这将在你的网页浏览器中打开 GUI。
+
