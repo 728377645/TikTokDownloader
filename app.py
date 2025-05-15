@@ -123,4 +123,49 @@ if st.button("🚀 开始下载", type="primary"):
             st.exception(e) # 打印完整的异常栈
 
 st.markdown("---")
-st.markdown("喵喵拳自用")
+st.markdown("测试")
+
+# app.py (你的 Streamlit 代码在前面)
+# ... (你现有的 st.title, st.button 等代码) ...
+
+# 在文件末尾添加以下代码：
+if __name__ == '__main__':
+    import os
+    from streamlit.web import bootstrap # Streamlit 1.18.0+
+    # 或者老版本可能是 from streamlit import cli as stcli (需要查阅你用的Streamlit版本)
+
+    # 获取当前脚本的真实路径
+    # 这对于 PyInstaller 打包后的程序尤其重要，因为它可能在临时目录中运行
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    main_script_path = os.path.join(current_dir, os.path.basename(__file__))
+
+    # 检查是否是被 PyInstaller 打包
+    # `sys.frozen` 是 PyInstaller 设置的一个属性
+    # `'_MEIPASS2' in os.environ` 也是一个常见的检查，但 sys.frozen 更通用
+    import sys
+    if hasattr(sys, 'frozen') and hasattr(sys, '_MEIPASS'):
+        # 如果是被打包的，直接尝试运行
+        # 注意：这种方式下，你的 app.py 就“是”那个 Streamlit 应用的入口
+        # 不需要再通过 streamlit run xxx.py 的形式调用
+        # Streamlit 的 bootstrap 会处理它
+        # 你可能需要确保 PyInstaller 打包了所有 Streamlit 的依赖
+        print(f"Running in PyInstaller bundle. Main script: {main_script_path}")
+        # Streamlit 的 bootstrap.run 需要脚本的绝对路径
+        # 以及一个空的命令行参数列表和一个标志字典
+        # 下面的 FLAGS 可能需要根据你的 Streamlit 版本调整
+        # 对于 Streamlit 1.18+
+        bootstrap.run(main_script_path, '', [], {})
+
+        # 对于老版本 Streamlit，可能使用 stcli
+        # from streamlit import cli as stcli
+        # sys.argv = ["streamlit", "run", main_script_path, "--global.developmentMode=false"]
+        # sys.exit(stcli.main())
+    else:
+        # 如果是直接通过 python app.py 运行（开发时），
+        # 我们可以用 subprocess 来模拟 streamlit run app.py
+        # 但通常开发时你会直接用 streamlit run app.py
+        print("Running in development mode. Please use 'streamlit run app.py'")
+        # 或者，如果你希望 `python app.py` 也能启动，可以这样做：
+        # import subprocess
+        # subprocess.run(["streamlit", "run", main_script_path])
+
